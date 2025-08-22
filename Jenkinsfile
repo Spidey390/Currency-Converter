@@ -8,18 +8,20 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'No build step needed (static site)'
+                echo 'Static site - nothing to build'
             }
         }
-        stage('Deploy') {
+        stage('Publish Site') {
             steps {
-                archiveArtifacts artifacts: '**/*', fingerprint: true
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: '.',
+                    reportFiles: 'index.html',
+                    reportName: 'Currency Converter'
+                ])
             }
-        }
-    }
-    post {
-        always {
-            echo 'Pipeline finished!'
         }
     }
 }
